@@ -10,20 +10,27 @@ export class RecipeService {
 
   constructor(private slService: ShoppingListService) {}
 
-  private recipes: Recipe[] = [
-    new Recipe(
-      'Tasty Schnitzel',
-      'Delicious schnitzel',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Recipe_logo.jpeg/600px-Recipe_logo.jpeg?20120913150547',
-      [new Ingredient('Meat', 1), new Ingredient('French Fries', 20)]
-    ),
-    new Recipe(
-      'Avocado Salad',
-      'Healthy and tasty avocado salad',
-      'https://hips.hearstapps.com/hmg-prod/images/delish-230228-avocado-salsa-002-ab-index-64148f12a1d8e.jpg?crop=0.788xw:0.788xh;0.0897xw,0.103xh&resize=1200:*',
-      [new Ingredient('Avocado', 2), new Ingredient('Tomatoes', 3)]
-    ),
-  ];
+  // private recipes: Recipe[] = [
+  //   new Recipe(
+  //     'Tasty Schnitzel',
+  //     'Delicious schnitzel',
+  //     'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Recipe_logo.jpeg/600px-Recipe_logo.jpeg?20120913150547',
+  //     [new Ingredient('Meat', 1), new Ingredient('French Fries', 20)]
+  //   ),
+  //   new Recipe(
+  //     'Avocado Salad',
+  //     'Healthy and tasty avocado salad',
+  //     'https://hips.hearstapps.com/hmg-prod/images/delish-230228-avocado-salsa-002-ab-index-64148f12a1d8e.jpg?crop=0.788xw:0.788xh;0.0897xw,0.103xh&resize=1200:*',
+  //     [new Ingredient('Avocado', 2), new Ingredient('Tomatoes', 3)]
+  //   ),
+  // ];
+
+  private recipes: Recipe[] = [];
+
+  setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
   getRecipes() {
     return this.recipes.slice(); //creates a new copy of the recipes array
