@@ -1,19 +1,24 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { RecipeService } from '../recipes/recipe.service';
 import { Recipe } from '../recipes/recipe.model';
-import { map, tap } from 'rxjs';
+import { exhaustMap, map, take, tap } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class DataStorageService {
-  constructor(private http: HttpClient, private recipeService: RecipeService) {}
+  constructor(
+    private http: HttpClient,
+    private recipeService: RecipeService,
+    private authService: AuthService
+  ) {}
 
   storeRecipes() {
     const recipes = this.recipeService.getRecipes();
 
     if (recipes.length > 0) {
-      //put request override all the data stored in database
+      //put request will override all the data stored in database
       this.http
         .put(
           'https://ng-recipe-book-5caed-default-rtdb.europe-west1.firebasedatabase.app/recipes.json',
