@@ -4,6 +4,7 @@ import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
 import { User } from './user.model';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { DataStorageService } from '../shared/data-storage.service';
 
 export interface AuthResponseData {
   kind: string;
@@ -20,7 +21,11 @@ export class AuthService {
   user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private dataStorageService: DataStorageService
+  ) {}
 
   signup(email: string, password: string) {
     return this.http
@@ -42,6 +47,7 @@ export class AuthService {
             resData.idToken,
             +resData.expiresIn
           );
+          this.dataStorageService.fetchRecipes().subscribe();
         })
       );
   }
@@ -66,6 +72,7 @@ export class AuthService {
             resData.idToken,
             +resData.expiresIn
           );
+          this.dataStorageService.fetchRecipes().subscribe();
         })
       );
   }
@@ -90,6 +97,7 @@ export class AuthService {
 
     if (loadedUser.token) {
       this.user.next(loadedUser);
+      this.dataStorageService.fetchRecipes().subscribe();
       const expirationDuration =
         new Date(userData._tokenExpirationDate).getTime() -
         new Date().getTime();
